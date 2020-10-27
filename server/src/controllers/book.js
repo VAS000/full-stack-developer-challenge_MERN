@@ -1,34 +1,54 @@
+const Book = require('../models/book');
 const Author = require('../models/author');
 
 const { jsonSuccess, jsonError } = require("../helpers/http.js");
-
 const { isValidMongoObjectID } = require('../helpers/validations');
 
 const {
   createSchema,
   updateSchema,
-} = require("../validations/author");
+} = require("../validations/book");
 
+const validateAuthorID = async(res, authorID) => {
+  if(!isValidMongoObjectID(authorID)) {
+    return jsonError(res, {
+      statusCode: 404,
+      message: "Invalid ID"
+    });
+  }
+
+  const author = await Author.findById(authorID);
+  if(!author) {
+    return jsonError(res, {
+      statusCode: 422,
+      message: "Invalid AuthorID"
+    });
+  }
+}
 
 const createUpdateErrorResponse = (res, err, next) => {
+
+  console.log(err);
+
   res.status(422);
 
   if (err.name === 'ValidationError') { // for mongoose validation error -- should not reach here, but just in case :D   
     return next(new Error('Validation failed or some fields are empty'));
   }
   if (err.name === 'MongoError' && err.code === 11000) {
-    return next(new Error('Firstname and Lastname should be unique!'));
+    return next(new Error('name and ISBN should be unique!'));
   }
 
   res.status(500);
   next(new Error('Internal server error'));
 }
 
-const getAuthors = async (req, res, next) => {
+
+const getBooks = async (req, res, next) => {
   try {
-    const authors = await Author.find();
+    const books = await Book.find().populate("author");;
     jsonSuccess(res, {
-      data: authors,
+      data: books,
     });
   }catch {
     res.status(500);
@@ -37,7 +57,7 @@ const getAuthors = async (req, res, next) => {
 }
 
 
-const createAuthor = async (req, res, next) => {
+const createBook = async (req, res, next) => {
   try {
     const { error } = createSchema.validate(req.body);
 
@@ -46,26 +66,30 @@ const createAuthor = async (req, res, next) => {
       return next(new Error(error.details[0].message));
     }
 
-    const { firstName, lastName } = req.body;
-    const author = new Author({
-      firstName,
-      lastName,
+    const { name, ISBN, authorID } = req.body;
+    
+    await validateAuthorID(res, authorID);
+    
+    const book = new Book({
+      name,
+      ISBN,
+      author: authorID
     });
 
-    const newAuthor = await author.save();
+    const newbook = await book.save();
     
-    if(newAuthor) {
+    if(newbook) {
       jsonSuccess(res, {
-        message: 'Author created successfully',
+        message: 'Book created successfully',
       });
     }
-    
   } catch (err) {
     createUpdateErrorResponse(res, err, next);
   }
+  
 }
 
-const getAuthor = async (req, res, next) => {
+const getBook = async (req, res, next) => {
 
   const { id } = req.params;
   if(!isValidMongoObjectID(id)) {
@@ -76,28 +100,27 @@ const getAuthor = async (req, res, next) => {
   }
 
   try {
-    const author = await Author.findById(id);
+    const book = await Book.findById(id).populate('author');
   
-    if(!author) {
+    if(!book) {
       res.status(404);
       jsonError(res, {
         statusCode: 404,
-        message: 'Author not found!',
+        message: 'Book not found!',
       });
     } else {
       jsonSuccess(res, {
-        data: author,
+        data: book,
       });
     }
   }catch {
     res.status(500);
     next(new Error('Internal server error'));
   }
-  
+
 }
 
-const updateAuthor =  async (req, res, next) => {
-
+const updateBook = async (req, res, next) => {
   if(!Object.keys(req.body).length) {
     return jsonError(res, {
       statusCode: 422,
@@ -106,6 +129,7 @@ const updateAuthor =  async (req, res, next) => {
   }
 
   const { id } = req.params;
+
   if(!isValidMongoObjectID(id)) {
     return jsonError(res, {
       statusCode: 404,
@@ -122,34 +146,38 @@ const updateAuthor =  async (req, res, next) => {
       return next(new Error(error.details[0].message));
     }
 
-    const { firstName, lastName } = req.body;
+    const {  name, ISBN, authorID } = req.body;
+    
+    if(!!authorID) {
+      await validateAuthorID(res, authorID);
+    }
 
-    const author = await Author.findById(id);
-    if(!author) {
+    const book = await Book.findById(id);
+    if(!book) {
       return jsonError(res, {
         statusCode: 404,
-        message: 'Author was not found!',
+        message: 'Book not found!',
       });
     }
 
-    author.firstName = firstName || author.firstName;
-    author.lastName = lastName || author.lastName;
+    book.name = name || book.name;
+    book.ISBN = ISBN || book.ISBN;
+    book.author = authorID || book.author; 
 
-    const newAuthor = await author.save();
+    const newBook = await book.save();
     
-    if(newAuthor) {
+    if(newBook) {
       jsonSuccess(res, {
-        message: 'Author updated successfully',
+        message: 'Book updated successfully',
       });
     }
     
-  }catch {
+  }catch(err) {
     createUpdateErrorResponse(res, err, next);
   }
 }
 
-
-const deleteAuthor = async (req, res, next) => {
+const deleteBook = async (req, res, next) => {
 
   const { id } = req.params;
   if(!isValidMongoObjectID(id)) {
@@ -160,15 +188,15 @@ const deleteAuthor = async (req, res, next) => {
   }
 
   try {
-    const author = await Author.findByIdAndRemove(id);
-    if(author) {
+    const book = await Book.findByIdAndRemove(id);
+    if(book) {
       jsonSuccess(res, {
-        message: "Author deleted successfully!",
+        message: "Book deleted successfully!",
       });
     } else {
       jsonError(res, {
         statusCode: 404,
-        message: 'Author was not found!',
+        message: 'Book was not found!',
       });
     }
 
@@ -179,11 +207,10 @@ const deleteAuthor = async (req, res, next) => {
 }
 
 
-
 module.exports = {
-  createAuthor,
-  getAuthors,
-  getAuthor,
-  deleteAuthor,
-  updateAuthor,
+  createBook,
+  getBooks,
+  getBook,
+  updateBook,
+  deleteBook,
 }
