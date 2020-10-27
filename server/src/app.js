@@ -29,6 +29,12 @@ app.use(helmet());
 /* API Routes */
 
 
+
 /* Errors handling */
+
+const errorController = require('./controllers/error');
+
+app.use(errorController.error_404);
+app.use(errorController.error_global_handler);
 
 module.exports = app;
