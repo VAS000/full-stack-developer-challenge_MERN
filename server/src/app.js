@@ -28,6 +28,9 @@ app.use(helmet());
 
 /* API Routes */
 
+const authorRouter = require('./api/author');
+
+app.use('/api/authors', authorRouter);
 
 
 /* Errors handling */
