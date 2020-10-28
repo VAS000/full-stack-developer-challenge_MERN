@@ -4,8 +4,11 @@ const cors = require("cors");
 const helmet = require("helmet");
 const mongoose = require("mongoose");
 const path = require('path');
+const isOnHeroku = process.env.HEROKU !== "true" && process.env.NODE_ENV === "production";
 
-require('dotenv').config({ path: path.resolve(__dirname, `./configs/.env.${process.env.NODE_ENV}`) });
+if(!isOnHeroku) {
+  require('dotenv').config({ path: path.resolve(__dirname, `./configs/.env.${process.env.NODE_ENV}`) });
+}
 
 /* DB connection */
 
@@ -41,4 +44,11 @@ const errorController = require('./controllers/error');
 app.use(errorController.error_404);
 app.use(errorController.error_global_handler);
 
+// In REAL prod environment, frontend better to be separate from backend
+if(isOnHeroku) {
+  app.use(express.static())
+
+  app.use('*', (req, res) => res.sendFile(path.join(__dirname, 'client', 'build', 'index.html')));
+}
+ 
 module.exports = app;
