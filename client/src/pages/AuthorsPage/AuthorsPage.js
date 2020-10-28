@@ -7,17 +7,26 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { AUTHORS_CREATE_PATH } from '../../router/routes/author';
 import Alert from '@material-ui/lab/Alert';
+import Loader from '../../components/Loader/Loader';
 
 const AuthorsPage = () => {
 
+  const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const [authors, setAuthors] = useState([]);
   const history = useHistory();
 
   const fetchData = async () => {
-    const res = await axios('/authors');
-    const data = res.data;
-    setAuthors(data);
+    setIsLoading(true)
+    try {
+      const res = await axios('/authors');
+      const data = res.data;
+      setAuthors(data); 
+      setIsLoading(false);
+    } catch {
+      setIsLoading(false);
+    }
+    
   }
 
   const createAuthor = () => {
@@ -26,7 +35,7 @@ const AuthorsPage = () => {
 
   const deleteAuthor = async id => {
     setMessage(null);
-    const res = await axios.delete(`/authors/${24324242}`);
+    const res = await axios.delete(`/authors/${id}`);
     setMessage({
       text: res.message,
       status: res.status,
@@ -42,20 +51,25 @@ const AuthorsPage = () => {
 
   return (
     <Container maxWidth="md" justify="center">
-      <Typography variant="h4" style={{
-        display: 'flex',
-        justifyContent: 'center',
-        marginBottom: '30px'
-      }}>Authors Details</Typography>
-      <Button variant="contained" color="primary" onClick={() => createAuthor()}>
-          Create Author
-      </Button>
+      {
+        isLoading ? <Loader /> :
+        <>
+          <Typography variant="h4" style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '30px'
+          }}>Authors Details</Typography>
+          <Button variant="contained" color="primary" onClick={() => createAuthor()}>
+              Create Author
+          </Button>
 
-      {!authors.length ? <h1>No Author found</h1>: <ListAuthors data={authors} fetchData={fetchData} deleteAuthor={deleteAuthor} />}
+          {!authors.length ? <h1>No Author found</h1>: <ListAuthors data={authors} fetchData={fetchData} deleteAuthor={deleteAuthor} />}
 
-      <div>
-        {message && <Alert severity={message.status}>{message.text}</Alert>}
-      </div>
+          <div>
+            {message && <Alert severity={message.status}>{message.text}</Alert>}
+          </div>
+        </>
+      }
     </Container>
   )
 }

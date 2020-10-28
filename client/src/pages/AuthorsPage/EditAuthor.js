@@ -7,6 +7,7 @@ import { AUTHORS_PATH } from '../../router/routes/author';
 import axios from '../../api/axios/axiosMainInstance';
 import Alert from '@material-ui/lab/Alert';
 import { Container } from '@material-ui/core';
+import Loader from '../../components/Loader/Loader';
 
 const EditAuthor = () => {
 
@@ -22,7 +23,7 @@ const EditAuthor = () => {
       console.log({res});
       setAuthor(res.data);
       setIsLoading(false)
-    } finally {
+    } catch {
       setIsLoading(false)
     }
   }
@@ -35,17 +36,23 @@ const EditAuthor = () => {
     e.preventDefault();
     setMessage(null);
 
-    const author = { 
+    console.log(JSON.stringify({ 
       firstName: author.firstName, 
       lastName: author.lastName,
-    };
+    }));
 
-    console.log(JSON.stringify(author));
+    // const res = await axios.put(`/authors/${author._id}`, JSON.stringify({ 
+    //   firstName: author.firstName, 
+    //   lastName: author.lastName,
+    // }));
 
     const res = await axios({
-      url: "/authors",
-      method: "put",
-      data: JSON.stringify(author),
+      url: `/authors/${author._id}`,
+      method: 'PUT',
+      data: {
+        firstName: author.firstName, 
+        lastName: author.lastName,
+      },
     });
 
     console.log({res});
@@ -61,18 +68,17 @@ const EditAuthor = () => {
   return (
     <Container maxWidth="sm">
       {
-        isLoading? <h1>Loading...</h1>:
+        isLoading? <Loader />:
         <>
-        <Typography variant="h4" style={{display: 'flex', justifyContent: 'center'}}>Edit Author</Typography>
+        <Typography variant="h4" style={{display: 'flex', justifyContent: 'center'}}>Update Author</Typography>
           <form style={{
-            display: 'flex',
-            flexFlow: 'row wrap'
+            flexFlow: 'row wrap',
           }}>
             <TextField placeholder="First Name" fullWidth margin="normal" name="firstName" defaultValue={author.firstName} onChange={handleChange}/>
             <TextField placeholder="Last name" fullWidth margin="normal" name="lastName" defaultValue={author.lastName} onChange={handleChange}/>
-            <Button variant="contained" color="primary" onClick={saveAuthor}>Create</Button>
+            <Button variant="contained" color="primary" onClick={saveAuthor}>Update</Button>
             
-            <div>
+            <div style={{marginTop: '20px'}}>
               {message && <Alert severity={message.status}>{message.text}</Alert>}
             </div>
 
