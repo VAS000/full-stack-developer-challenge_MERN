@@ -1,6 +1,4 @@
 import { lazy } from "react"; 
-// TODO: lazy load pages/components
-import React from 'react';
 
 export const BOOKS_PATH = '/books';
 export const BOOKS_CREATE_PATH = `${BOOKS_PATH}/create`;

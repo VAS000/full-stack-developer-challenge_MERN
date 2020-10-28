@@ -1,6 +1,4 @@
-import { lazy } from "react"; 
-// TODO: lazy load pages/components
-import React from 'react';
+import { lazy } from "react";
 
 export const AUTHORS_PATH = '/authors';
 export const AUTHORS_CREATE_PATH = `${AUTHORS_PATH}/create`;

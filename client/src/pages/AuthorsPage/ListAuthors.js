@@ -1,30 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory} from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import axios from '../../api/axios/axiosMainInstance';
-import author, { AUTHORS_EDIT_PATH } from '../../router/routes/author';
-
-const useStyles = makeStyles({
-  table: {
-    //maxWidth: 960,
-    //margin: 'auto',
-  },
-});
 
 const ListAuthors = ({ data, deleteAuthor }) => {
   
-  const classes = useStyles();
   const history = useHistory();
 
   const editAuthor = id => {
@@ -33,7 +19,7 @@ const ListAuthors = ({ data, deleteAuthor }) => {
   }
 
   return (
-    <Table className={classes.table} aria-label="Authors List">
+    <Table aria-label="Authors List">
       <TableHead>
           <TableRow>
               <TableCell>Id</TableCell>

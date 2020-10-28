@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from '../../api/axios/axiosMainInstance';
-import { Grid, Container } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Alert from '@material-ui/lab/Alert';
@@ -40,7 +40,7 @@ const BooksPage = () => {
       text: res.message,
       status: res.status,
     });
-    if(res.status == 'success') {
+    if(res.status === 'success') {
       fetchData();
     }
   }

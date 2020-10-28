@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from '../../api/axios/axiosMainInstance';
 import ListAuthors from './ListAuthors';
-import { Grid, Container } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { AUTHORS_CREATE_PATH } from '../../router/routes/author';
@@ -40,7 +40,7 @@ const AuthorsPage = () => {
       text: res.message,
       status: res.status,
     });
-    if(res.status == 'success') {
+    if(res.status === 'success') {
       fetchData();
     }
   }

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -7,25 +6,11 @@ import axios from '../../api/axios/axiosMainInstance';
 import Alert from '@material-ui/lab/Alert';
 import { Container } from '@material-ui/core';
 import Loader from '../../components/Loader/Loader';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    //margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
 
 const CreateBook = () => {
 
-  const classes = useStyles();
 
   const book_Default  = {
     name: "",
@@ -82,6 +67,7 @@ const CreateBook = () => {
     <Container maxWidth="sm">
       {
         isLoading? <Loader />:
+        !authors.length ? <h1>Plese add author first before adding book</h1>:
         <>
         <Typography variant="h4" style={{display: 'flex', justifyContent: 'center'}}>Create Book</Typography>
           <form style={{

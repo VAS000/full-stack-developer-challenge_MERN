@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { AUTHORS_PATH } from '../../router/routes/author';
 import axios from '../../api/axios/axiosMainInstance';
 import Alert from '@material-ui/lab/Alert';
 import { Container } from '@material-ui/core';

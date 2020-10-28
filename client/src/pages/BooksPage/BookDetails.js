@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import axios from '../../api/axios/axiosMainInstance';
 import Alert from '@material-ui/lab/Alert';

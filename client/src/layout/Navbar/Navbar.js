@@ -1,37 +1,63 @@
-import React, { useState } from 'react';
-import MenuIcon from '@material-ui/icons/Menu';
-import CloseIcon from '@material-ui/icons/Close';
+import React from 'react';
+import styled from 'styled-components';
+import { NavLink as Link } from 'react-router-dom';
+import { Container, makeStyles } from '@material-ui/core';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { AUTHORS_PATH } from '../../router/routes/author';
+import { BOOKS_PATH } from '../../router/routes/book';
 
-import $style from './Navbar.module.scss';
+const NavLink = styled(Link)`
+  color: #fff;
+  display: flex;
+  text-decoration: none;
+  align-items: center;
+  height: 100%;
+  padding: 0 1rem;
+  cursor: pointer;
 
-const NavbarLinks = [{
-  text: 'Home',
-  url: '#'
-}, {
-  text: 'Authors',
-  url: '#'
-}, {
-  text: 'Books',
-  url: '#'
-}]
+  &.active {
+    color: yellow;
+  }
+`
+
+
+const useStyles = makeStyles({
+  root: {
+    flexGrow: 1,
+  },
+  grow: {
+    flexGrow: 1,
+  },
+});
 
 const Navbar = () => {
 
-  const [isOpen, setIsOpen] = useState(false);
+  const classes = useStyles();
+
+  // const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className={$style.Navbar}>
-      <h1 className={$style.header}>InfoXchange</h1>
-      <div className={$style.burgerMenu} onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? <MenuIcon style={{fill: "#fff"}}/>: <CloseIcon style={{fill: "#fff"}}/>}
-      </div>
-      <ul className={$style.menu}>
-        {NavbarLinks.map(link => (
-          <li><a className={$style.link} href={link.url}>{link.text}</a></li>
-        ))}
-      </ul>
-    </nav>
+    <div className={classes.root}>
+      <AppBar>
+        <Container maxWidth="md">
+        <Toolbar>
+          {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <MenuIcon />
+          </IconButton> */}
+          <Typography variant="h6" color="inherit" className={classes.grow}>
+              InfoXChange
+            </Typography>
+          
+          <NavLink exact to={AUTHORS_PATH} activeClassName="active">Authors</NavLink>
+          <NavLink exact to={BOOKS_PATH} activeClassName="active">Books</NavLink>
+
+        </Toolbar>
+        </Container>
+      </AppBar>
+    </div>
   )
-}
+};
 
 export default Navbar;

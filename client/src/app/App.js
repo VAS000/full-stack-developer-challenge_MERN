@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { Container} from '@material-ui/core';
 
-import Navbar from '../layout/NewNavbar/Navbar';
+import Navbar from '../layout/Navbar/Navbar';
 import Router from '../router/Router';
 import routes from '../router';
 
