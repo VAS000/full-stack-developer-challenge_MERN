@@ -13,7 +13,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import axios from '../../api/axios/axiosMainInstance';
-import author from '../../router/routes/author';
+import author, { AUTHORS_EDIT_PATH } from '../../router/routes/author';
 
 const useStyles = makeStyles({
   table: {
@@ -39,7 +39,7 @@ const ListAuthors = ({ data, deleteAuthor }) => {
               <TableCell>Id</TableCell>
               <TableCell align="right">FirstName</TableCell>
               <TableCell align="right">LastName</TableCell>
-              <TableCell colSpan={2}>[Actions]</TableCell>
+              <TableCell colSpan={2} align='center'>[Actions]</TableCell>
           </TableRow>
       </TableHead>
       <TableBody>

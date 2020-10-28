@@ -50,7 +50,7 @@ const CreateAuthor = () => {
       }}>
         <TextField placeholder="First Name" fullWidth margin="normal" name="firstName" value={author.firstName} onChange={handleChange}/>
         <TextField placeholder="Last name" fullWidth margin="normal" name="lastName" value={author.lastName} onChange={handleChange}/>
-        <Button variant="contained" color="primary" onClick={saveAuthor}>Create</Button>
+        <Button variant="contained" color="primary" onClick={saveAuthor} style={{marginTop: '20px'}}>Create</Button>
         
         <div style={{marginTop: '20px'}}>
           {message && <Alert severity={message.status}>{message.text}</Alert>}

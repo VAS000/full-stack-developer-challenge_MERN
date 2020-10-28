@@ -47,7 +47,7 @@ const EditAuthor = () => {
     // }));
 
     const res = await axios({
-      url: `/authors/${author._id}`,
+      url: `/authors/${authorId}`,
       method: 'PUT',
       data: {
         firstName: author.firstName, 
@@ -76,7 +76,7 @@ const EditAuthor = () => {
           }}>
             <TextField placeholder="First Name" fullWidth margin="normal" name="firstName" defaultValue={author.firstName} onChange={handleChange}/>
             <TextField placeholder="Last name" fullWidth margin="normal" name="lastName" defaultValue={author.lastName} onChange={handleChange}/>
-            <Button variant="contained" color="primary" onClick={saveAuthor}>Update</Button>
+            <Button variant="contained" color="primary" onClick={saveAuthor} style={{marginTop: '20px'}}>Update</Button>
             
             <div style={{marginTop: '20px'}}>
               {message && <Alert severity={message.status}>{message.text}</Alert>}
