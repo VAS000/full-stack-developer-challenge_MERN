@@ -41,11 +41,6 @@ const EditAuthor = () => {
       lastName: author.lastName,
     }));
 
-    // const res = await axios.put(`/authors/${author._id}`, JSON.stringify({ 
-    //   firstName: author.firstName, 
-    //   lastName: author.lastName,
-    // }));
-
     const res = await axios({
       url: `/authors/${authorId}`,
       method: 'PUT',

@@ -81,7 +81,6 @@ const EditBook = () => {
       {
         isLoading? <Loader />:
         <>
-        {JSON.stringify(book)}
           <Typography variant="h4" style={{display: 'flex', justifyContent: 'center'}}>Update Book</Typography>
           <form style={{
             flexFlow: 'row wrap',

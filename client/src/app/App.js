@@ -13,7 +13,7 @@ console.log("registered routes", routes);
 const App = () => (
   <BrowserRouter>
     <Navbar />
-    <Container maxWidth="md" style={{marginTop: '20px'}}>
+    <Container maxWidth="md" style={{paddingTop: '80px'}}>
 
       <Switch>
         {routes.map(route => {
