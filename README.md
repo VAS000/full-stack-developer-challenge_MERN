@@ -50,3 +50,36 @@ You are recommended to use **ReactJS** to create the frontend, but you are free 
 * The project structure is up to you to decide
 * You are recommended to use git commits in a logical manner to demonstrate the development progress
 * Writing tests and adhering to development standards/conventions will let you gain extra points :)
+
+
+
+
+# Completed Dev Implementaion with the following
+
+This app is written using Node/Express and MongoDB in the backend and React in the frontend
+
+# To run this app:
+
+* cd into client and run **npm install && npm start**
+* cd into server/configs, rename **.env.example** to **.env.dev**
+* feel free to use mongoDB atlas url as free service
+* get back to /server and run **npm install && npm run dev**
+* You should see a console log indicating a successfull connection to DB
+* DONE! 
+
+
+## TODO
+* [] Frontend form validation 
+* [] Backend valdiation messages to be changed and be more clear, but it's working perfectly fine for now.
+* [] This should not happen, but in case a custom API request with invalid or wrong author id, it's currently allowed, errors in frontend for such  case already handled
+* [] Console.log clean-up 
+* [] Add typescript support in future. Didn't have the time while writing the code (since it's simple) to think about types/interfaces, etc. 
+* [] Unit testing! :D 
+* [] SSR [Well, if this app grows!] :) 
+* [] CI/CD [if this app grows!] :)  
+* [] Add loading while sending data/request to server
+
+## Thoughts
+
+* for big data, add filtering, sorting and maybe auto-fetching on scroll
+* I personally didn't see a good place in code to use redux/redux-toolkit, but it is an option in the future in case of sharable data
