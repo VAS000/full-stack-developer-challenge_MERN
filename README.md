@@ -58,6 +58,10 @@ You are recommended to use **ReactJS** to create the frontend, but you are free 
 
 This app is written using Node/Express and MongoDB in the backend and React in the frontend
 
+# Frontend hosted on Netlify and Backend on Heroku
+
+https://vas-infoxchange-dev-challenge.netlify.app
+
 # To run this app:
 
 * cd into client and run **npm install && npm start**
