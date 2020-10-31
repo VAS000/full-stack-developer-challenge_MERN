@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -21,7 +21,7 @@ const EditBook = () => {
   });
   const [message, setMessage] = useState(null);
   
-  const fetchBook = async () => {
+  const fetchBook = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await axios.get('/authors');
@@ -37,18 +37,16 @@ const EditBook = () => {
         ISBN: data.ISBN,
         authorID: data.author._id,
       });
-
-      console.log({"B": book});
       
       setIsLoading(false)
     } catch {
       setIsLoading(false)
     }
-  }
+  }, [bookId]);
 
   useEffect(() => {
     fetchBook();
-  }, [])
+  }, [fetchBook])
 
   const saveBook = async (e) => {
     e.preventDefault();

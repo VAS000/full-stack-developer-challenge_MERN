@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useParams, useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import axios from '../../api/axios/axiosMainInstance';
@@ -15,7 +15,7 @@ const BookDetails = () => {
   const [book, setBook] = useState(null);
   const [message, setMessage] = useState(null);
 
-  const fetchBook = async () => {
+  const fetchBook = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await axios.get(`/books/${bookId}`);
@@ -33,11 +33,11 @@ const BookDetails = () => {
         message: e.message,
       });
     }
-  }
+  }, [bookId, history])
 
   useEffect(() => {
     fetchBook();
-  }, [])
+  }, [fetchBook])
 
   return (
     <Container maxWidth="sm">

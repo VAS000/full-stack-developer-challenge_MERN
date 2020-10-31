@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -15,7 +15,7 @@ const EditAuthor = () => {
   const [author, setAuthor] = useState({});
   const [message, setMessage] = useState(null);
 
-  const fetchAuthor = async () => {
+  const fetchAuthor = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await axios.get(`/authors/${authorId}`);
@@ -25,11 +25,11 @@ const EditAuthor = () => {
     } catch {
       setIsLoading(false)
     }
-  }
+  }, [authorId])
 
   useEffect(() => {
     fetchAuthor();
-  }, [])
+  }, [fetchAuthor])
 
   const saveAuthor = async (e) => {
     e.preventDefault();
