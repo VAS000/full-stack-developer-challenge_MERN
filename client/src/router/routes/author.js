@@ -12,7 +12,8 @@ export const AUTHORS = {
 
 export const AUTHORS_CREATE = {
   path: AUTHORS_CREATE_PATH,
-  component: lazy(() => import('../../pages/AuthorsPage/CreateAuthor')),
+  // component: lazy(() => import('../../pages/AuthorsPage/CreateAuthor')),
+  component: lazy(() => import('../../pages/AuthorsPage/CreateAuthorValidation')),
   isExact: true,
 };
 

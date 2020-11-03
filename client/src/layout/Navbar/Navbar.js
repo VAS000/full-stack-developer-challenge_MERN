@@ -49,15 +49,15 @@ const Navbar = () => {
   // const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={classes.root}>
-      <AppBar>
+    <div>
+      <AppBar  className={classes.root}>
         <Container maxWidth="md">
         <Toolbar>
           {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
             <MenuIcon />
           </IconButton> */}
           <Typography variant="h6" color="inherit" className={classes.grow}>
-              <StyledLink exact to={HOME_PATH}>InfoXChange</StyledLink>
+              <StyledLink to={HOME_PATH}>InfoXChange</StyledLink>
             </Typography>
           
           <StyledNavLink exact to={AUTHORS_PATH} activeClassName="active">Authors</StyledNavLink>
