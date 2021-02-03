@@ -80,6 +80,7 @@ const createBook = async (req, res, next) => {
     
     if(newbook) {
       jsonSuccess(res, {
+        statusCode: 201,
         message: 'Book created successfully',
       });
     }

@@ -9,21 +9,30 @@ require('dotenv').config({ path: path.resolve(__dirname, `./configs/.env.${proce
 
 /* DB connection */
 
-mongoose.connect(`${process.env.MONGO_URI}`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
-const db = mongoose.connection;
-db.on("connected", () => console.log("connected to mongodb"));
-db.on("disconnected", () => console.log("connection to disconnected"));
-db.on("error", (err) => console.log("connection error", err));
+console.log({
+  env: process.env.NODE_ENV
+})
+
+if(process.env.NODE_ENV !== 'test'){
+  mongoose.connect(`${process.env.MONGO_URI}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  });
+  const db = mongoose.connection;
+  db.on("connected", () => console.log("connected to mongodb"));
+  db.on("disconnected", () => console.log("connection to disconnected"));
+  db.on("error", (err) => console.log("connection error", err));
+}
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use(morgan('combined'));
+if(process.env.NODE_ENV !== 'test') {
+  app.use(morgan('combined'));
+}
+
 app.use(helmet());
 
 /* API Routes */

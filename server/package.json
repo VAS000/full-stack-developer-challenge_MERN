@@ -4,16 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=prod node src/server.js",
     "dev": "NODE_ENV=dev nodemon src/server.js",
     "local": "NODE_ENV=local nodemon src/server.js",
+    "test": "NODE_ENV=test jest --detectOpenHandles --coverage --runInBand",
+    "test:watch": "NODE_ENV=test jest --detectOpenHandles --coverage --runInBand --watch",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.3"
+    "jest": "^26.6.2",
+    "jest-serial-runner": "^1.1.0",
+    "jest-stare": "^2.2.0",
+    "mocha": "^8.2.1",
+    "mongodb-memory-server": "^6.9.2",
+    "nodemon": "^2.0.3",
+    "superagent": "^6.1.0",
+    "supertest": "^6.0.0"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",

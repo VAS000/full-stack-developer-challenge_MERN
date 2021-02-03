@@ -1,0 +1,3069 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>jest-stare!</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/diff2html.min.css" rel="stylesheet" type="text/css">
+    <link href="css/jest-stare.css" rel="stylesheet" type="text/css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/holder.js"></script>
+    <script src="js/diff2html.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/view.js"></script>
+</head>
+
+<body>
+    <header>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" id="navbar-title" href="#">jest-stare</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="coverage-link" class="nav-link disabled" href="#">Coverage</a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="onoff-switch mr-sm-2 ml-sm-2">
+                            <input type="checkbox" name="off-switch" class="off-switch-checkbox" id="lab-passoff-switch" checked>
+                            <label class="onoff-switch-label" for="lab-passoff-switch">
+                                <span class="pass off-switch-inner"></span>
+                                <span class="off-switch-switch"></span>
+                            </label>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="onoff-switch mr-sm-2 ml-sm-2">
+                            <input type="checkbox" name="off-switch" class="off-switch-checkbox" id="lab-failoff-switch" checked>
+                            <label class="onoff-switch-label" for="lab-failoff-switch">
+                                <span class="fail off-switch-inner"></span>
+                                <span class="off-switch-switch"></span>
+                            </label>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="onoff-switch mr-sm-2 ml-sm-2">
+                            <input type="checkbox" name="off-switch" class="off-switch-checkbox" id="lab-pendingoff-switch" checked>
+                            <label class="onoff-switch-label" for="lab-pendingoff-switch">
+                                <span class="pending off-switch-inner"></span>
+                                <span class="off-switch-switch"></span>
+                            </label>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="onoff-switch mr-sm-2 ml-sm-2">
+                            <input type="checkbox" name="off-switch" class="off-switch-checkbox" id="lab-todooff-switch" checked>
+                            <label class="onoff-switch-label" for="lab-todooff-switch">
+                                <span class="todo off-switch-inner"></span>
+                                <span class="off-switch-switch"></span>
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+                <!-- <form class="form-inline mt-2 mt-md-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" disabled>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" disabled>Search</button>
+                </form> -->
+            </div>
+        </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+
+        <h1 class="mt-5"></h1>
+
+        <!-- Three columns of text below the carousel -->
+        <div class="row">
+            <div class="col-lg-4">
+                <canvas id="test-suites-canvas" width="100" height="100"></canvas>
+                <h2>Test Suites</h2>
+                <div class="list-group">
+                    <p id="test-suites-results" class="list-group-item list-group-item-action">1 passed, 1 total</p>
+                </div>
+            </div>
+            <!-- /.col-lg-4 -->
+            <div class="col-lg-4">
+                <canvas id="tests-canvas" width="100" height="100"></canvas>
+                <h2>Tests</h2>
+                <div class="list-group">
+                    <p id="tests-results" class="list-group-item list-group-item-action">5 passed, 5 total</p>
+                </div>
+            </div>
+            <!-- /.col-lg-4 -->
+            <div class="col-lg-4" id="snapshots-group">
+                <canvas id="snapshots-canvas" width="100" height="100"></canvas>
+                <h2>Snapshots</h2>
+                <div class="list-group">
+                    <p id="snapshots-results" class="list-group-item list-group-item-action">0 passed, 0 total</p>
+                </div>
+            </div>
+            <!-- /.col-lg-4 -->
+        </div>
+
+        <div id="loading-info" class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+                aria-valuemax="100" style="width: 100%"></div>
+        </div>
+
+        <div class="d-none" id="test-summary"></div>
+        <div class="d-none" id="test-config">{
+  &quot;resultDir&quot;: &quot;.&#x2F;jest-stare&#x2F;&quot;,
+  &quot;resultHtml&quot;: &quot;index.html&quot;,
+  &quot;resultJson&quot;: &quot;jest-results.json&quot;
+}</div>
+        <div id="accordion">
+            <div class="d-none" id="test-results">{
+  &quot;numFailedTestSuites&quot;: 0,
+  &quot;numFailedTests&quot;: 0,
+  &quot;numPassedTestSuites&quot;: 1,
+  &quot;numPassedTests&quot;: 5,
+  &quot;numPendingTestSuites&quot;: 0,
+  &quot;numPendingTests&quot;: 0,
+  &quot;numRuntimeErrorTestSuites&quot;: 0,
+  &quot;numTodoTests&quot;: 0,
+  &quot;numTotalTestSuites&quot;: 1,
+  &quot;numTotalTests&quot;: 5,
+  &quot;openHandles&quot;: [],
+  &quot;snapshot&quot;: {
+    &quot;added&quot;: 0,
+    &quot;didUpdate&quot;: false,
+    &quot;failure&quot;: false,
+    &quot;filesAdded&quot;: 0,
+    &quot;filesRemoved&quot;: 0,
+    &quot;filesRemovedList&quot;: [],
+    &quot;filesUnmatched&quot;: 0,
+    &quot;filesUpdated&quot;: 0,
+    &quot;matched&quot;: 0,
+    &quot;total&quot;: 0,
+    &quot;unchecked&quot;: 0,
+    &quot;uncheckedKeysByFile&quot;: [],
+    &quot;unmatched&quot;: 0,
+    &quot;updated&quot;: 0
+  },
+  &quot;startTime&quot;: 1604431198219,
+  &quot;success&quot;: true,
+  &quot;testResults&quot;: [
+    {
+      &quot;leaks&quot;: false,
+      &quot;numFailingTests&quot;: 0,
+      &quot;numPassingTests&quot;: 5,
+      &quot;numPendingTests&quot;: 0,
+      &quot;numTodoTests&quot;: 0,
+      &quot;openHandles&quot;: [],
+      &quot;perfStats&quot;: {
+        &quot;end&quot;: 1604431199002,
+        &quot;runtime&quot;: 773,
+        &quot;slow&quot;: false,
+        &quot;start&quot;: 1604431198229
+      },
+      &quot;skipped&quot;: false,
+      &quot;snapshot&quot;: {
+        &quot;added&quot;: 0,
+        &quot;fileDeleted&quot;: false,
+        &quot;matched&quot;: 0,
+        &quot;unchecked&quot;: 0,
+        &quot;unmatched&quot;: 0,
+        &quot;updated&quot;: 0,
+        &quot;uncheckedKeys&quot;: []
+      },
+      &quot;testFilePath&quot;: &quot;&#x2F;home&#x2F;vas&#x2F;mern&#x2F;full-stack-developer-challenge&#x2F;server&#x2F;src&#x2F;tests&#x2F;api&#x2F;book.js&quot;,
+      &quot;testResults&quot;: [
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;Books&quot;,
+            &quot;&#x2F;GET books&quot;
+          ],
+          &quot;duration&quot;: 41,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;Books &#x2F;GET books it should GET empty books array&quot;,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 0,
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;it should GET empty books array&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;Books&quot;,
+            &quot;&#x2F;GET books&quot;
+          ],
+          &quot;duration&quot;: 31,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;Books &#x2F;GET books it should INSERT &amp; GET One Book&quot;,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 0,
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;it should INSERT &amp; GET One Book&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;Books&quot;,
+            &quot;&#x2F;GET books&quot;
+          ],
+          &quot;duration&quot;: 15,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;Books &#x2F;GET books it should INSERT &amp; GET Same inserted Book&quot;,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 0,
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;it should INSERT &amp; GET Same inserted Book&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;Books&quot;,
+            &quot;&#x2F;GET books&quot;
+          ],
+          &quot;duration&quot;: 8,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;Books &#x2F;GET books it should return Invalid ID&quot;,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 0,
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;it should return Invalid ID&quot;
+        },
+        {
+          &quot;ancestorTitles&quot;: [
+            &quot;Books&quot;,
+            &quot;&#x2F;GET books&quot;
+          ],
+          &quot;duration&quot;: 11,
+          &quot;failureDetails&quot;: [],
+          &quot;failureMessages&quot;: [],
+          &quot;fullName&quot;: &quot;Books &#x2F;GET books it should return 404 no book - valid but wrong id &quot;,
+          &quot;location&quot;: null,
+          &quot;numPassingAsserts&quot;: 0,
+          &quot;status&quot;: &quot;passed&quot;,
+          &quot;title&quot;: &quot;it should return 404 no book - valid but wrong id &quot;
+        }
+      ],
+      &quot;failureMessage&quot;: null
+    }
+  ],
+  &quot;wasInterrupted&quot;: false,
+  &quot;coverageMap&quot;: {
+    &quot;&#x2F;home&#x2F;vas&#x2F;mern&#x2F;full-stack-developer-challenge&#x2F;server&#x2F;src&#x2F;tests&#x2F;configs&#x2F;db.js&quot;: {
+      &quot;path&quot;: &quot;&#x2F;home&#x2F;vas&#x2F;mern&#x2F;full-stack-developer-challenge&#x2F;server&#x2F;src&#x2F;tests&#x2F;configs&#x2F;db.js&quot;,
+      &quot;statementMap&quot;: {
+        &quot;0&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 1,
+            &quot;column&quot;: 17
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 1,
+            &quot;column&quot;: 36
+          }
+        },
+        &quot;1&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 2,
+            &quot;column&quot;: 30
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 2,
+            &quot;column&quot;: 62
+          }
+        },
+        &quot;2&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 4,
+            &quot;column&quot;: 15
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 4,
+            &quot;column&quot;: 38
+          }
+        },
+        &quot;3&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 6,
+            &quot;column&quot;: 16
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 13,
+            &quot;column&quot;: 1
+          }
+        },
+        &quot;4&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 7,
+            &quot;column&quot;: 14
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 7,
+            &quot;column&quot;: 35
+          }
+        },
+        &quot;5&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 8,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 12,
+            &quot;column&quot;: 5
+          }
+        },
+        &quot;6&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 15,
+            &quot;column&quot;: 22
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 19,
+            &quot;column&quot;: 1
+          }
+        },
+        &quot;7&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 16,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 16,
+            &quot;column&quot;: 43
+          }
+        },
+        &quot;8&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 17,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 17,
+            &quot;column&quot;: 36
+          }
+        },
+        &quot;9&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 18,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 18,
+            &quot;column&quot;: 22
+          }
+        },
+        &quot;10&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 21,
+            &quot;column&quot;: 22
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 28,
+            &quot;column&quot;: 1
+          }
+        },
+        &quot;11&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 22,
+            &quot;column&quot;: 22
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 22,
+            &quot;column&quot;: 53
+          }
+        },
+        &quot;12&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 24,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 27,
+            &quot;column&quot;: 3
+          }
+        },
+        &quot;13&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 25,
+            &quot;column&quot;: 23
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 25,
+            &quot;column&quot;: 39
+          }
+        },
+        &quot;14&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 26,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 26,
+            &quot;column&quot;: 34
+          }
+        },
+        &quot;15&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 30,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 34,
+            &quot;column&quot;: 2
+          }
+        }
+      },
+      &quot;fnMap&quot;: {
+        &quot;0&quot;: {
+          &quot;name&quot;: &quot;(anonymous_0)&quot;,
+          &quot;decl&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 6,
+              &quot;column&quot;: 16
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 6,
+              &quot;column&quot;: 17
+            }
+          },
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 6,
+              &quot;column&quot;: 28
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 13,
+              &quot;column&quot;: 1
+            }
+          },
+          &quot;line&quot;: 6
+        },
+        &quot;1&quot;: {
+          &quot;name&quot;: &quot;(anonymous_1)&quot;,
+          &quot;decl&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 15,
+              &quot;column&quot;: 22
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 15,
+              &quot;column&quot;: 23
+            }
+          },
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 15,
+              &quot;column&quot;: 34
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 19,
+              &quot;column&quot;: 1
+            }
+          },
+          &quot;line&quot;: 15
+        },
+        &quot;2&quot;: {
+          &quot;name&quot;: &quot;(anonymous_2)&quot;,
+          &quot;decl&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 21,
+              &quot;column&quot;: 22
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 21,
+              &quot;column&quot;: 23
+            }
+          },
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 21,
+              &quot;column&quot;: 34
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 28,
+              &quot;column&quot;: 1
+            }
+          },
+          &quot;line&quot;: 21
+        }
+      },
+      &quot;branchMap&quot;: {},
+      &quot;s&quot;: {
+        &quot;0&quot;: 1,
+        &quot;1&quot;: 1,
+        &quot;2&quot;: 1,
+        &quot;3&quot;: 1,
+        &quot;4&quot;: 1,
+        &quot;5&quot;: 1,
+        &quot;6&quot;: 1,
+        &quot;7&quot;: 1,
+        &quot;8&quot;: 1,
+        &quot;9&quot;: 1,
+        &quot;10&quot;: 1,
+        &quot;11&quot;: 5,
+        &quot;12&quot;: 5,
+        &quot;13&quot;: 10,
+        &quot;14&quot;: 10,
+        &quot;15&quot;: 1
+      },
+      &quot;f&quot;: {
+        &quot;0&quot;: 1,
+        &quot;1&quot;: 1,
+        &quot;2&quot;: 5
+      },
+      &quot;b&quot;: {},
+      &quot;_coverageSchema&quot;: &quot;1a1c01bbd47fc00a2c39e90264f33305004495a9&quot;,
+      &quot;hash&quot;: &quot;3878ece62268693d089bb9870fa85ff18db526e2&quot;
+    },
+    &quot;&#x2F;home&#x2F;vas&#x2F;mern&#x2F;full-stack-developer-challenge&#x2F;server&#x2F;src&#x2F;app.js&quot;: {
+      &quot;path&quot;: &quot;&#x2F;home&#x2F;vas&#x2F;mern&#x2F;full-stack-developer-challenge&#x2F;server&#x2F;src&#x2F;app.js&quot;,
+      &quot;statementMap&quot;: {
+        &quot;0&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 1,
+            &quot;column&quot;: 16
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 1,
+            &quot;column&quot;: 34
+          }
+        },
+        &quot;1&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 2,
+            &quot;column&quot;: 15
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 2,
+            &quot;column&quot;: 32
+          }
+        },
+        &quot;2&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 3,
+            &quot;column&quot;: 13
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 3,
+            &quot;column&quot;: 28
+          }
+        },
+        &quot;3&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 4,
+            &quot;column&quot;: 15
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 4,
+            &quot;column&quot;: 32
+          }
+        },
+        &quot;4&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 5,
+            &quot;column&quot;: 17
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 5,
+            &quot;column&quot;: 36
+          }
+        },
+        &quot;5&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 6,
+            &quot;column&quot;: 13
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 6,
+            &quot;column&quot;: 28
+          }
+        },
+        &quot;6&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 8,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 8,
+            &quot;column&quot;: 102
+          }
+        },
+        &quot;7&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 12,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 14,
+            &quot;column&quot;: 2
+          }
+        },
+        &quot;8&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 16,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 26,
+            &quot;column&quot;: 1
+          }
+        },
+        &quot;9&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 17,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 21,
+            &quot;column&quot;: 5
+          }
+        },
+        &quot;10&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 22,
+            &quot;column&quot;: 13
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 22,
+            &quot;column&quot;: 32
+          }
+        },
+        &quot;11&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 23,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 23,
+            &quot;column&quot;: 64
+          }
+        },
+        &quot;12&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 23,
+            &quot;column&quot;: 27
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 23,
+            &quot;column&quot;: 62
+          }
+        },
+        &quot;13&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 24,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 24,
+            &quot;column&quot;: 73
+          }
+        },
+        &quot;14&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 24,
+            &quot;column&quot;: 30
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 24,
+            &quot;column&quot;: 71
+          }
+        },
+        &quot;15&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 25,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 25,
+            &quot;column&quot;: 64
+          }
+        },
+        &quot;16&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 25,
+            &quot;column&quot;: 26
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 25,
+            &quot;column&quot;: 62
+          }
+        },
+        &quot;17&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 28,
+            &quot;column&quot;: 12
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 28,
+            &quot;column&quot;: 21
+          }
+        },
+        &quot;18&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 30,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 30,
+            &quot;column&quot;: 24
+          }
+        },
+        &quot;19&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 31,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 31,
+            &quot;column&quot;: 16
+          }
+        },
+        &quot;20&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 32,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 34,
+            &quot;column&quot;: 1
+          }
+        },
+        &quot;21&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 33,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 33,
+            &quot;column&quot;: 30
+          }
+        },
+        &quot;22&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 36,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 36,
+            &quot;column&quot;: 18
+          }
+        },
+        &quot;23&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 40,
+            &quot;column&quot;: 21
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 40,
+            &quot;column&quot;: 44
+          }
+        },
+        &quot;24&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 41,
+            &quot;column&quot;: 19
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 41,
+            &quot;column&quot;: 40
+          }
+        },
+        &quot;25&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 43,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 43,
+            &quot;column&quot;: 38
+          }
+        },
+        &quot;26&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 44,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 44,
+            &quot;column&quot;: 34
+          }
+        },
+        &quot;27&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 48,
+            &quot;column&quot;: 24
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 48,
+            &quot;column&quot;: 54
+          }
+        },
+        &quot;28&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 50,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 50,
+            &quot;column&quot;: 35
+          }
+        },
+        &quot;29&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 51,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 51,
+            &quot;column&quot;: 46
+          }
+        },
+        &quot;30&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 53,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 53,
+            &quot;column&quot;: 21
+          }
+        }
+      },
+      &quot;fnMap&quot;: {
+        &quot;0&quot;: {
+          &quot;name&quot;: &quot;(anonymous_0)&quot;,
+          &quot;decl&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 23,
+              &quot;column&quot;: 21
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 23,
+              &quot;column&quot;: 22
+            }
+          },
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 23,
+              &quot;column&quot;: 27
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 23,
+              &quot;column&quot;: 62
+            }
+          },
+          &quot;line&quot;: 23
+        },
+        &quot;1&quot;: {
+          &quot;name&quot;: &quot;(anonymous_1)&quot;,
+          &quot;decl&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 24,
+              &quot;column&quot;: 24
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 24,
+              &quot;column&quot;: 25
+            }
+          },
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 24,
+              &quot;column&quot;: 30
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 24,
+              &quot;column&quot;: 71
+            }
+          },
+          &quot;line&quot;: 24
+        },
+        &quot;2&quot;: {
+          &quot;name&quot;: &quot;(anonymous_2)&quot;,
+          &quot;decl&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 25,
+              &quot;column&quot;: 17
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 25,
+              &quot;column&quot;: 18
+            }
+          },
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 25,
+              &quot;column&quot;: 26
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 25,
+              &quot;column&quot;: 62
+            }
+          },
+          &quot;line&quot;: 25
+        }
+      },
+      &quot;branchMap&quot;: {
+        &quot;0&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 16,
+              &quot;column&quot;: 0
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 26,
+              &quot;column&quot;: 1
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 16,
+                &quot;column&quot;: 0
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 26,
+                &quot;column&quot;: 1
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 16,
+                &quot;column&quot;: 0
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 26,
+                &quot;column&quot;: 1
+              }
+            }
+          ],
+          &quot;line&quot;: 16
+        },
+        &quot;1&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 32,
+              &quot;column&quot;: 0
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 34,
+              &quot;column&quot;: 1
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 32,
+                &quot;column&quot;: 0
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 34,
+                &quot;column&quot;: 1
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 32,
+                &quot;column&quot;: 0
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 34,
+                &quot;column&quot;: 1
+              }
+            }
+          ],
+          &quot;line&quot;: 32
+        }
+      },
+      &quot;s&quot;: {
+        &quot;0&quot;: 1,
+        &quot;1&quot;: 1,
+        &quot;2&quot;: 1,
+        &quot;3&quot;: 1,
+        &quot;4&quot;: 1,
+        &quot;5&quot;: 1,
+        &quot;6&quot;: 1,
+        &quot;7&quot;: 1,
+        &quot;8&quot;: 1,
+        &quot;9&quot;: 0,
+        &quot;10&quot;: 0,
+        &quot;11&quot;: 0,
+        &quot;12&quot;: 0,
+        &quot;13&quot;: 0,
+        &quot;14&quot;: 0,
+        &quot;15&quot;: 0,
+        &quot;16&quot;: 0,
+        &quot;17&quot;: 1,
+        &quot;18&quot;: 1,
+        &quot;19&quot;: 1,
+        &quot;20&quot;: 1,
+        &quot;21&quot;: 0,
+        &quot;22&quot;: 1,
+        &quot;23&quot;: 1,
+        &quot;24&quot;: 1,
+        &quot;25&quot;: 1,
+        &quot;26&quot;: 1,
+        &quot;27&quot;: 1,
+        &quot;28&quot;: 1,
+        &quot;29&quot;: 1,
+        &quot;30&quot;: 1
+      },
+      &quot;f&quot;: {
+        &quot;0&quot;: 0,
+        &quot;1&quot;: 0,
+        &quot;2&quot;: 0
+      },
+      &quot;b&quot;: {
+        &quot;0&quot;: [
+          0,
+          1
+        ],
+        &quot;1&quot;: [
+          0,
+          1
+        ]
+      },
+      &quot;_coverageSchema&quot;: &quot;1a1c01bbd47fc00a2c39e90264f33305004495a9&quot;,
+      &quot;hash&quot;: &quot;da7864c8ddd549bc96bed434a809bb659efa8280&quot;
+    },
+    &quot;&#x2F;home&#x2F;vas&#x2F;mern&#x2F;full-stack-developer-challenge&#x2F;server&#x2F;src&#x2F;controllers&#x2F;book.js&quot;: {
+      &quot;path&quot;: &quot;&#x2F;home&#x2F;vas&#x2F;mern&#x2F;full-stack-developer-challenge&#x2F;server&#x2F;src&#x2F;controllers&#x2F;book.js&quot;,
+      &quot;statementMap&quot;: {
+        &quot;0&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 1,
+            &quot;column&quot;: 13
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 1,
+            &quot;column&quot;: 38
+          }
+        },
+        &quot;1&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 2,
+            &quot;column&quot;: 15
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 2,
+            &quot;column&quot;: 42
+          }
+        },
+        &quot;2&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 4,
+            &quot;column&quot;: 35
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 4,
+            &quot;column&quot;: 64
+          }
+        },
+        &quot;3&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 5,
+            &quot;column&quot;: 33
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 5,
+            &quot;column&quot;: 66
+          }
+        },
+        &quot;4&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 10,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 10,
+            &quot;column&quot;: 34
+          }
+        },
+        &quot;5&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 12,
+            &quot;column&quot;: 25
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 27,
+            &quot;column&quot;: 1
+          }
+        },
+        &quot;6&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 13,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 18,
+            &quot;column&quot;: 3
+          }
+        },
+        &quot;7&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 14,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 17,
+            &quot;column&quot;: 7
+          }
+        },
+        &quot;8&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 20,
+            &quot;column&quot;: 17
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 20,
+            &quot;column&quot;: 48
+          }
+        },
+        &quot;9&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 21,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 26,
+            &quot;column&quot;: 3
+          }
+        },
+        &quot;10&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 22,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 25,
+            &quot;column&quot;: 7
+          }
+        },
+        &quot;11&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 29,
+            &quot;column&quot;: 34
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 44,
+            &quot;column&quot;: 1
+          }
+        },
+        &quot;12&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 31,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 31,
+            &quot;column&quot;: 19
+          }
+        },
+        &quot;13&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 33,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 33,
+            &quot;column&quot;: 18
+          }
+        },
+        &quot;14&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 35,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 37,
+            &quot;column&quot;: 3
+          }
+        },
+        &quot;15&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 36,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 36,
+            &quot;column&quot;: 73
+          }
+        },
+        &quot;16&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 38,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 40,
+            &quot;column&quot;: 3
+          }
+        },
+        &quot;17&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 39,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 39,
+            &quot;column&quot;: 62
+          }
+        },
+        &quot;18&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 42,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 42,
+            &quot;column&quot;: 18
+          }
+        },
+        &quot;19&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 43,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 43,
+            &quot;column&quot;: 43
+          }
+        },
+        &quot;20&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 47,
+            &quot;column&quot;: 17
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 57,
+            &quot;column&quot;: 1
+          }
+        },
+        &quot;21&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 48,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 56,
+            &quot;column&quot;: 3
+          }
+        },
+        &quot;22&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 49,
+            &quot;column&quot;: 18
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 49,
+            &quot;column&quot;: 54
+          }
+        },
+        &quot;23&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 50,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 52,
+            &quot;column&quot;: 7
+          }
+        },
+        &quot;24&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 54,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 54,
+            &quot;column&quot;: 20
+          }
+        },
+        &quot;25&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 55,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 55,
+            &quot;column&quot;: 45
+          }
+        },
+        &quot;26&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 60,
+            &quot;column&quot;: 19
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 91,
+            &quot;column&quot;: 1
+          }
+        },
+        &quot;27&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 61,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 89,
+            &quot;column&quot;: 3
+          }
+        },
+        &quot;28&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 62,
+            &quot;column&quot;: 22
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 62,
+            &quot;column&quot;: 53
+          }
+        },
+        &quot;29&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 64,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 67,
+            &quot;column&quot;: 5
+          }
+        },
+        &quot;30&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 65,
+            &quot;column&quot;: 6
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 65,
+            &quot;column&quot;: 22
+          }
+        },
+        &quot;31&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 66,
+            &quot;column&quot;: 6
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 66,
+            &quot;column&quot;: 55
+          }
+        },
+        &quot;32&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 69,
+            &quot;column&quot;: 37
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 69,
+            &quot;column&quot;: 45
+          }
+        },
+        &quot;33&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 71,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 71,
+            &quot;column&quot;: 42
+          }
+        },
+        &quot;34&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 73,
+            &quot;column&quot;: 17
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 77,
+            &quot;column&quot;: 6
+          }
+        },
+        &quot;35&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 79,
+            &quot;column&quot;: 20
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 79,
+            &quot;column&quot;: 37
+          }
+        },
+        &quot;36&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 81,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 86,
+            &quot;column&quot;: 5
+          }
+        },
+        &quot;37&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 82,
+            &quot;column&quot;: 6
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 85,
+            &quot;column&quot;: 9
+          }
+        },
+        &quot;38&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 88,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 88,
+            &quot;column&quot;: 46
+          }
+        },
+        &quot;39&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 93,
+            &quot;column&quot;: 16
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 122,
+            &quot;column&quot;: 1
+          }
+        },
+        &quot;40&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 95,
+            &quot;column&quot;: 17
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 95,
+            &quot;column&quot;: 27
+          }
+        },
+        &quot;41&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 96,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 101,
+            &quot;column&quot;: 3
+          }
+        },
+        &quot;42&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 97,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 100,
+            &quot;column&quot;: 7
+          }
+        },
+        &quot;43&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 103,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 120,
+            &quot;column&quot;: 3
+          }
+        },
+        &quot;44&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 104,
+            &quot;column&quot;: 17
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 104,
+            &quot;column&quot;: 59
+          }
+        },
+        &quot;45&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 106,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 116,
+            &quot;column&quot;: 5
+          }
+        },
+        &quot;46&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 107,
+            &quot;column&quot;: 6
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 107,
+            &quot;column&quot;: 22
+          }
+        },
+        &quot;47&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 108,
+            &quot;column&quot;: 6
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 111,
+            &quot;column&quot;: 9
+          }
+        },
+        &quot;48&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 113,
+            &quot;column&quot;: 6
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 115,
+            &quot;column&quot;: 9
+          }
+        },
+        &quot;49&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 118,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 118,
+            &quot;column&quot;: 20
+          }
+        },
+        &quot;50&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 119,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 119,
+            &quot;column&quot;: 45
+          }
+        },
+        &quot;51&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 124,
+            &quot;column&quot;: 19
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 179,
+            &quot;column&quot;: 1
+          }
+        },
+        &quot;52&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 125,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 130,
+            &quot;column&quot;: 3
+          }
+        },
+        &quot;53&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 126,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 129,
+            &quot;column&quot;: 7
+          }
+        },
+        &quot;54&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 132,
+            &quot;column&quot;: 17
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 132,
+            &quot;column&quot;: 27
+          }
+        },
+        &quot;55&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 134,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 139,
+            &quot;column&quot;: 3
+          }
+        },
+        &quot;56&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 135,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 138,
+            &quot;column&quot;: 7
+          }
+        },
+        &quot;57&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 141,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 178,
+            &quot;column&quot;: 3
+          }
+        },
+        &quot;58&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 143,
+            &quot;column&quot;: 22
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 143,
+            &quot;column&quot;: 53
+          }
+        },
+        &quot;59&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 145,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 148,
+            &quot;column&quot;: 5
+          }
+        },
+        &quot;60&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 146,
+            &quot;column&quot;: 6
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 146,
+            &quot;column&quot;: 22
+          }
+        },
+        &quot;61&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 147,
+            &quot;column&quot;: 6
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 147,
+            &quot;column&quot;: 55
+          }
+        },
+        &quot;62&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 150,
+            &quot;column&quot;: 38
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 150,
+            &quot;column&quot;: 46
+          }
+        },
+        &quot;63&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 152,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 154,
+            &quot;column&quot;: 5
+          }
+        },
+        &quot;64&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 153,
+            &quot;column&quot;: 6
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 153,
+            &quot;column&quot;: 44
+          }
+        },
+        &quot;65&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 156,
+            &quot;column&quot;: 17
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 156,
+            &quot;column&quot;: 40
+          }
+        },
+        &quot;66&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 157,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 162,
+            &quot;column&quot;: 5
+          }
+        },
+        &quot;67&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 158,
+            &quot;column&quot;: 6
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 161,
+            &quot;column&quot;: 9
+          }
+        },
+        &quot;68&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 164,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 164,
+            &quot;column&quot;: 34
+          }
+        },
+        &quot;69&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 165,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 165,
+            &quot;column&quot;: 34
+          }
+        },
+        &quot;70&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 166,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 166,
+            &quot;column&quot;: 42
+          }
+        },
+        &quot;71&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 168,
+            &quot;column&quot;: 20
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 168,
+            &quot;column&quot;: 37
+          }
+        },
+        &quot;72&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 170,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 174,
+            &quot;column&quot;: 5
+          }
+        },
+        &quot;73&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 171,
+            &quot;column&quot;: 6
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 173,
+            &quot;column&quot;: 9
+          }
+        },
+        &quot;74&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 177,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 177,
+            &quot;column&quot;: 46
+          }
+        },
+        &quot;75&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 181,
+            &quot;column&quot;: 19
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 208,
+            &quot;column&quot;: 1
+          }
+        },
+        &quot;76&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 183,
+            &quot;column&quot;: 17
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 183,
+            &quot;column&quot;: 27
+          }
+        },
+        &quot;77&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 184,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 189,
+            &quot;column&quot;: 3
+          }
+        },
+        &quot;78&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 185,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 188,
+            &quot;column&quot;: 7
+          }
+        },
+        &quot;79&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 191,
+            &quot;column&quot;: 2
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 207,
+            &quot;column&quot;: 3
+          }
+        },
+        &quot;80&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 192,
+            &quot;column&quot;: 17
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 192,
+            &quot;column&quot;: 49
+          }
+        },
+        &quot;81&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 193,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 202,
+            &quot;column&quot;: 5
+          }
+        },
+        &quot;82&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 194,
+            &quot;column&quot;: 6
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 196,
+            &quot;column&quot;: 9
+          }
+        },
+        &quot;83&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 198,
+            &quot;column&quot;: 6
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 201,
+            &quot;column&quot;: 9
+          }
+        },
+        &quot;84&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 205,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 205,
+            &quot;column&quot;: 20
+          }
+        },
+        &quot;85&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 206,
+            &quot;column&quot;: 4
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 206,
+            &quot;column&quot;: 45
+          }
+        },
+        &quot;86&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 211,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 217,
+            &quot;column&quot;: 1
+          }
+        }
+      },
+      &quot;fnMap&quot;: {
+        &quot;0&quot;: {
+          &quot;name&quot;: &quot;(anonymous_0)&quot;,
+          &quot;decl&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 12,
+              &quot;column&quot;: 25
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 12,
+              &quot;column&quot;: 26
+            }
+          },
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 12,
+              &quot;column&quot;: 49
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 27,
+              &quot;column&quot;: 1
+            }
+          },
+          &quot;line&quot;: 12
+        },
+        &quot;1&quot;: {
+          &quot;name&quot;: &quot;(anonymous_1)&quot;,
+          &quot;decl&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 29,
+              &quot;column&quot;: 34
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 29,
+              &quot;column&quot;: 35
+            }
+          },
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 29,
+              &quot;column&quot;: 54
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 44,
+              &quot;column&quot;: 1
+            }
+          },
+          &quot;line&quot;: 29
+        },
+        &quot;2&quot;: {
+          &quot;name&quot;: &quot;(anonymous_2)&quot;,
+          &quot;decl&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 47,
+              &quot;column&quot;: 17
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 47,
+              &quot;column&quot;: 18
+            }
+          },
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 47,
+              &quot;column&quot;: 43
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 57,
+              &quot;column&quot;: 1
+            }
+          },
+          &quot;line&quot;: 47
+        },
+        &quot;3&quot;: {
+          &quot;name&quot;: &quot;(anonymous_3)&quot;,
+          &quot;decl&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 60,
+              &quot;column&quot;: 19
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 60,
+              &quot;column&quot;: 20
+            }
+          },
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 60,
+              &quot;column&quot;: 45
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 91,
+              &quot;column&quot;: 1
+            }
+          },
+          &quot;line&quot;: 60
+        },
+        &quot;4&quot;: {
+          &quot;name&quot;: &quot;(anonymous_4)&quot;,
+          &quot;decl&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 93,
+              &quot;column&quot;: 16
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 93,
+              &quot;column&quot;: 17
+            }
+          },
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 93,
+              &quot;column&quot;: 42
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 122,
+              &quot;column&quot;: 1
+            }
+          },
+          &quot;line&quot;: 93
+        },
+        &quot;5&quot;: {
+          &quot;name&quot;: &quot;(anonymous_5)&quot;,
+          &quot;decl&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 124,
+              &quot;column&quot;: 19
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 124,
+              &quot;column&quot;: 20
+            }
+          },
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 124,
+              &quot;column&quot;: 45
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 179,
+              &quot;column&quot;: 1
+            }
+          },
+          &quot;line&quot;: 124
+        },
+        &quot;6&quot;: {
+          &quot;name&quot;: &quot;(anonymous_6)&quot;,
+          &quot;decl&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 181,
+              &quot;column&quot;: 19
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 181,
+              &quot;column&quot;: 20
+            }
+          },
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 181,
+              &quot;column&quot;: 45
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 208,
+              &quot;column&quot;: 1
+            }
+          },
+          &quot;line&quot;: 181
+        }
+      },
+      &quot;branchMap&quot;: {
+        &quot;0&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 13,
+              &quot;column&quot;: 2
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 18,
+              &quot;column&quot;: 3
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 13,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 18,
+                &quot;column&quot;: 3
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 13,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 18,
+                &quot;column&quot;: 3
+              }
+            }
+          ],
+          &quot;line&quot;: 13
+        },
+        &quot;1&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 21,
+              &quot;column&quot;: 2
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 26,
+              &quot;column&quot;: 3
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 21,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 26,
+                &quot;column&quot;: 3
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 21,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 26,
+                &quot;column&quot;: 3
+              }
+            }
+          ],
+          &quot;line&quot;: 21
+        },
+        &quot;2&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 35,
+              &quot;column&quot;: 2
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 37,
+              &quot;column&quot;: 3
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 35,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 37,
+                &quot;column&quot;: 3
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 35,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 37,
+                &quot;column&quot;: 3
+              }
+            }
+          ],
+          &quot;line&quot;: 35
+        },
+        &quot;3&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 38,
+              &quot;column&quot;: 2
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 40,
+              &quot;column&quot;: 3
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 38,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 40,
+                &quot;column&quot;: 3
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 38,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 40,
+                &quot;column&quot;: 3
+              }
+            }
+          ],
+          &quot;line&quot;: 38
+        },
+        &quot;4&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 38,
+              &quot;column&quot;: 6
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 38,
+              &quot;column&quot;: 53
+            }
+          },
+          &quot;type&quot;: &quot;binary-expr&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 38,
+                &quot;column&quot;: 6
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 38,
+                &quot;column&quot;: 31
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 38,
+                &quot;column&quot;: 35
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 38,
+                &quot;column&quot;: 53
+              }
+            }
+          ],
+          &quot;line&quot;: 38
+        },
+        &quot;5&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 64,
+              &quot;column&quot;: 4
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 67,
+              &quot;column&quot;: 5
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 64,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 67,
+                &quot;column&quot;: 5
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 64,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 67,
+                &quot;column&quot;: 5
+              }
+            }
+          ],
+          &quot;line&quot;: 64
+        },
+        &quot;6&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 81,
+              &quot;column&quot;: 4
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 86,
+              &quot;column&quot;: 5
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 81,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 86,
+                &quot;column&quot;: 5
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 81,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 86,
+                &quot;column&quot;: 5
+              }
+            }
+          ],
+          &quot;line&quot;: 81
+        },
+        &quot;7&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 96,
+              &quot;column&quot;: 2
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 101,
+              &quot;column&quot;: 3
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 96,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 101,
+                &quot;column&quot;: 3
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 96,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 101,
+                &quot;column&quot;: 3
+              }
+            }
+          ],
+          &quot;line&quot;: 96
+        },
+        &quot;8&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 106,
+              &quot;column&quot;: 4
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 116,
+              &quot;column&quot;: 5
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 106,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 116,
+                &quot;column&quot;: 5
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 106,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 116,
+                &quot;column&quot;: 5
+              }
+            }
+          ],
+          &quot;line&quot;: 106
+        },
+        &quot;9&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 125,
+              &quot;column&quot;: 2
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 130,
+              &quot;column&quot;: 3
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 125,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 130,
+                &quot;column&quot;: 3
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 125,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 130,
+                &quot;column&quot;: 3
+              }
+            }
+          ],
+          &quot;line&quot;: 125
+        },
+        &quot;10&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 134,
+              &quot;column&quot;: 2
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 139,
+              &quot;column&quot;: 3
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 134,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 139,
+                &quot;column&quot;: 3
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 134,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 139,
+                &quot;column&quot;: 3
+              }
+            }
+          ],
+          &quot;line&quot;: 134
+        },
+        &quot;11&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 145,
+              &quot;column&quot;: 4
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 148,
+              &quot;column&quot;: 5
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 145,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 148,
+                &quot;column&quot;: 5
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 145,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 148,
+                &quot;column&quot;: 5
+              }
+            }
+          ],
+          &quot;line&quot;: 145
+        },
+        &quot;12&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 152,
+              &quot;column&quot;: 4
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 154,
+              &quot;column&quot;: 5
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 152,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 154,
+                &quot;column&quot;: 5
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 152,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 154,
+                &quot;column&quot;: 5
+              }
+            }
+          ],
+          &quot;line&quot;: 152
+        },
+        &quot;13&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 157,
+              &quot;column&quot;: 4
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 162,
+              &quot;column&quot;: 5
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 157,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 162,
+                &quot;column&quot;: 5
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 157,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 162,
+                &quot;column&quot;: 5
+              }
+            }
+          ],
+          &quot;line&quot;: 157
+        },
+        &quot;14&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 164,
+              &quot;column&quot;: 16
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 164,
+              &quot;column&quot;: 33
+            }
+          },
+          &quot;type&quot;: &quot;binary-expr&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 164,
+                &quot;column&quot;: 16
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 164,
+                &quot;column&quot;: 20
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 164,
+                &quot;column&quot;: 24
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 164,
+                &quot;column&quot;: 33
+              }
+            }
+          ],
+          &quot;line&quot;: 164
+        },
+        &quot;15&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 165,
+              &quot;column&quot;: 16
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 165,
+              &quot;column&quot;: 33
+            }
+          },
+          &quot;type&quot;: &quot;binary-expr&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 165,
+                &quot;column&quot;: 16
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 165,
+                &quot;column&quot;: 20
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 165,
+                &quot;column&quot;: 24
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 165,
+                &quot;column&quot;: 33
+              }
+            }
+          ],
+          &quot;line&quot;: 165
+        },
+        &quot;16&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 166,
+              &quot;column&quot;: 18
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 166,
+              &quot;column&quot;: 41
+            }
+          },
+          &quot;type&quot;: &quot;binary-expr&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 166,
+                &quot;column&quot;: 18
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 166,
+                &quot;column&quot;: 26
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 166,
+                &quot;column&quot;: 30
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 166,
+                &quot;column&quot;: 41
+              }
+            }
+          ],
+          &quot;line&quot;: 166
+        },
+        &quot;17&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 170,
+              &quot;column&quot;: 4
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 174,
+              &quot;column&quot;: 5
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 170,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 174,
+                &quot;column&quot;: 5
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 170,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 174,
+                &quot;column&quot;: 5
+              }
+            }
+          ],
+          &quot;line&quot;: 170
+        },
+        &quot;18&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 184,
+              &quot;column&quot;: 2
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 189,
+              &quot;column&quot;: 3
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 184,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 189,
+                &quot;column&quot;: 3
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 184,
+                &quot;column&quot;: 2
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 189,
+                &quot;column&quot;: 3
+              }
+            }
+          ],
+          &quot;line&quot;: 184
+        },
+        &quot;19&quot;: {
+          &quot;loc&quot;: {
+            &quot;start&quot;: {
+              &quot;line&quot;: 193,
+              &quot;column&quot;: 4
+            },
+            &quot;end&quot;: {
+              &quot;line&quot;: 202,
+              &quot;column&quot;: 5
+            }
+          },
+          &quot;type&quot;: &quot;if&quot;,
+          &quot;locations&quot;: [
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 193,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 202,
+                &quot;column&quot;: 5
+              }
+            },
+            {
+              &quot;start&quot;: {
+                &quot;line&quot;: 193,
+                &quot;column&quot;: 4
+              },
+              &quot;end&quot;: {
+                &quot;line&quot;: 202,
+                &quot;column&quot;: 5
+              }
+            }
+          ],
+          &quot;line&quot;: 193
+        }
+      },
+      &quot;s&quot;: {
+        &quot;0&quot;: 1,
+        &quot;1&quot;: 1,
+        &quot;2&quot;: 1,
+        &quot;3&quot;: 1,
+        &quot;4&quot;: 1,
+        &quot;5&quot;: 1,
+        &quot;6&quot;: 0,
+        &quot;7&quot;: 0,
+        &quot;8&quot;: 0,
+        &quot;9&quot;: 0,
+        &quot;10&quot;: 0,
+        &quot;11&quot;: 1,
+        &quot;12&quot;: 0,
+        &quot;13&quot;: 0,
+        &quot;14&quot;: 0,
+        &quot;15&quot;: 0,
+        &quot;16&quot;: 0,
+        &quot;17&quot;: 0,
+        &quot;18&quot;: 0,
+        &quot;19&quot;: 0,
+        &quot;20&quot;: 1,
+        &quot;21&quot;: 2,
+        &quot;22&quot;: 2,
+        &quot;23&quot;: 2,
+        &quot;24&quot;: 0,
+        &quot;25&quot;: 0,
+        &quot;26&quot;: 1,
+        &quot;27&quot;: 0,
+        &quot;28&quot;: 0,
+        &quot;29&quot;: 0,
+        &quot;30&quot;: 0,
+        &quot;31&quot;: 0,
+        &quot;32&quot;: 0,
+        &quot;33&quot;: 0,
+        &quot;34&quot;: 0,
+        &quot;35&quot;: 0,
+        &quot;36&quot;: 0,
+        &quot;37&quot;: 0,
+        &quot;38&quot;: 0,
+        &quot;39&quot;: 1,
+        &quot;40&quot;: 3,
+        &quot;41&quot;: 3,
+        &quot;42&quot;: 1,
+        &quot;43&quot;: 2,
+        &quot;44&quot;: 2,
+        &quot;45&quot;: 2,
+        &quot;46&quot;: 1,
+        &quot;47&quot;: 1,
+        &quot;48&quot;: 1,
+        &quot;49&quot;: 0,
+        &quot;50&quot;: 0,
+        &quot;51&quot;: 1,
+        &quot;52&quot;: 0,
+        &quot;53&quot;: 0,
+        &quot;54&quot;: 0,
+        &quot;55&quot;: 0,
+        &quot;56&quot;: 0,
+        &quot;57&quot;: 0,
+        &quot;58&quot;: 0,
+        &quot;59&quot;: 0,
+        &quot;60&quot;: 0,
+        &quot;61&quot;: 0,
+        &quot;62&quot;: 0,
+        &quot;63&quot;: 0,
+        &quot;64&quot;: 0,
+        &quot;65&quot;: 0,
+        &quot;66&quot;: 0,
+        &quot;67&quot;: 0,
+        &quot;68&quot;: 0,
+        &quot;69&quot;: 0,
+        &quot;70&quot;: 0,
+        &quot;71&quot;: 0,
+        &quot;72&quot;: 0,
+        &quot;73&quot;: 0,
+        &quot;74&quot;: 0,
+        &quot;75&quot;: 1,
+        &quot;76&quot;: 0,
+        &quot;77&quot;: 0,
+        &quot;78&quot;: 0,
+        &quot;79&quot;: 0,
+        &quot;80&quot;: 0,
+        &quot;81&quot;: 0,
+        &quot;82&quot;: 0,
+        &quot;83&quot;: 0,
+        &quot;84&quot;: 0,
+        &quot;85&quot;: 0,
+        &quot;86&quot;: 1
+      },
+      &quot;f&quot;: {
+        &quot;0&quot;: 0,
+        &quot;1&quot;: 0,
+        &quot;2&quot;: 2,
+        &quot;3&quot;: 0,
+        &quot;4&quot;: 3,
+        &quot;5&quot;: 0,
+        &quot;6&quot;: 0
+      },
+      &quot;b&quot;: {
+        &quot;0&quot;: [
+          0,
+          0
+        ],
+        &quot;1&quot;: [
+          0,
+          0
+        ],
+        &quot;2&quot;: [
+          0,
+          0
+        ],
+        &quot;3&quot;: [
+          0,
+          0
+        ],
+        &quot;4&quot;: [
+          0,
+          0
+        ],
+        &quot;5&quot;: [
+          0,
+          0
+        ],
+        &quot;6&quot;: [
+          0,
+          0
+        ],
+        &quot;7&quot;: [
+          1,
+          2
+        ],
+        &quot;8&quot;: [
+          1,
+          1
+        ],
+        &quot;9&quot;: [
+          0,
+          0
+        ],
+        &quot;10&quot;: [
+          0,
+          0
+        ],
+        &quot;11&quot;: [
+          0,
+          0
+        ],
+        &quot;12&quot;: [
+          0,
+          0
+        ],
+        &quot;13&quot;: [
+          0,
+          0
+        ],
+        &quot;14&quot;: [
+          0,
+          0
+        ],
+        &quot;15&quot;: [
+          0,
+          0
+        ],
+        &quot;16&quot;: [
+          0,
+          0
+        ],
+        &quot;17&quot;: [
+          0,
+          0
+        ],
+        &quot;18&quot;: [
+          0,
+          0
+        ],
+        &quot;19&quot;: [
+          0,
+          0
+        ]
+      },
+      &quot;_coverageSchema&quot;: &quot;1a1c01bbd47fc00a2c39e90264f33305004495a9&quot;,
+      &quot;hash&quot;: &quot;d92d731cac85b80504810a1b84d62e4460c6beed&quot;
+    },
+    &quot;&#x2F;home&#x2F;vas&#x2F;mern&#x2F;full-stack-developer-challenge&#x2F;server&#x2F;src&#x2F;models&#x2F;book.js&quot;: {
+      &quot;path&quot;: &quot;&#x2F;home&#x2F;vas&#x2F;mern&#x2F;full-stack-developer-challenge&#x2F;server&#x2F;src&#x2F;models&#x2F;book.js&quot;,
+      &quot;statementMap&quot;: {
+        &quot;0&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 1,
+            &quot;column&quot;: 17
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 1,
+            &quot;column&quot;: 36
+          }
+        },
+        &quot;1&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 3,
+            &quot;column&quot;: 19
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 3,
+            &quot;column&quot;: 27
+          }
+        },
+        &quot;2&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 5,
+            &quot;column&quot;: 19
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 27,
+            &quot;column&quot;: 22
+          }
+        },
+        &quot;3&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 30,
+            &quot;column&quot;: 18
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 30,
+            &quot;column&quot;: 52
+          }
+        },
+        &quot;4&quot;: {
+          &quot;start&quot;: {
+            &quot;line&quot;: 32,
+            &quot;column&quot;: 0
+          },
+          &quot;end&quot;: {
+            &quot;line&quot;: 32,
+            &quot;column&quot;: 27
+          }
+        }
+      },
+      &quot;fnMap&quot;: {},
+      &quot;branchMap&quot;: {},
+      &quot;s&quot;: {
+        &quot;0&quot;: 1,
+        &quot;1&quot;: 1,
+        &quot;2&quot;: 1,
+        &quot;3&quot;: 1,
+        &quot;4&quot;: 1
+      },
+      &quot;f&quot;: {},
+      &quot;b&quot;: {},
+      &quot;_coverageSchema&quot;: &quot;1a1c01bbd47fc00a2c39e90264f33305004495a9&quot;,
+      &quot;hash&quot;: &quot;0b43ed0e35ffcdd64767750d99a886e1a19e5da1&quot;
+    }
+  }
+}</div>
+        </div>
+        <div class="d-none" id="test-global-config"></div>
+
+    </main>
+    <hr>
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">jest-stare 2020</span>
+        </div>
+    </footer>
+</body>
+
+</html>
+
